@@ -1,0 +1,53 @@
+services:
+  # message broker service
+  redis:
+    image: redis:7.4.0-alpine3.20
+
+  # backend service
+  server:
+    container_name: django_app
+    build:
+      context: ./app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app:/usr/src/app
+    ports:
+      - 8001:8000
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure--s5(_&w#+^m8*y%j+%%!(z*7hw!+j5j5nil3+u-k!#p$^m!2e!
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+    depends_on:
+      - redis
+
+  # celery service
+  celery:
+    container_name: celery
+    build:
+      context: ./app
+    command: celery -A core worker -l INFO
+    volumes:
+      - ./app:/usr/src/app
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure--s5(_&w#+^m8*y%j+%%!(z*7hw!+j5j5nil3+u-k!#p$^m!2e!
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+    depends_on:
+      - redis
+      - server
+
+  # standalone celery service
+  celery2:
+    container_name: standalone_celery
+    build:
+      context: ./celery_worker
+      dockerfile: Dockerfile
+    command: celery -A celery_2 worker -l INFO
+    volumes:
+      - ./celery_worker:/usr/src/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - server
