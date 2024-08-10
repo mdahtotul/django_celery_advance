@@ -25,7 +25,7 @@ services:
     container_name: celery
     build:
       context: ./app
-    command: celery -A core worker -l INFO -Q queue1
+    command: celery -A core worker -l INFO -Q celery,celery:1,celery:2,celery:3
     volumes:
       - ./app:/usr/src/app
     environment:
@@ -37,17 +37,17 @@ services:
       - server
 
   # standalone celery service
-  celery2:
-    container_name: standalone_celery
-    build:
-      context: ./celery_worker
-      dockerfile: Dockerfile
-    command: celery -A celery_2 worker -l INFO -Q queue2
-    volumes:
-      - ./celery_worker:/usr/src/app
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-    depends_on:
-      - redis
-      - server
+  # celery2:
+  #   container_name: standalone_celery
+  #   build:
+  #     context: ./celery_worker
+  #     dockerfile: Dockerfile
+  #   command: celery -A celery_2 worker -l INFO -Q queue2
+  #   volumes:
+  #     - ./celery_worker:/usr/src/app
+  #   environment:
+  #     - CELERY_BROKER_URL=redis://redis:6379/0
+  #     - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  #   depends_on:
+  #     - redis
+  #     - server
