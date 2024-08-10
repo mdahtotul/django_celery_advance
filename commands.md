@@ -8,6 +8,8 @@ pip freeze > requirements.txt
 
 ```
 docker compose up -d --build
+docker compose down
+docker exec -it <app_name> /bin/sh
 ```
 
 ### Celery commands

@@ -7,10 +7,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 app = Celery("django_celery")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
-
-@app.task
-def add_numbers():
-    return
-
+# task routing
+app.conf.task_routes = {
+    # "app.tasks.*": {"queue": "celery"},
+    "playground.tasks.task1": {"queue": "queue1"},
+    "playground.tasks.task2": {"queue": "queue2"},
+}
 
 app.autodiscover_tasks()
