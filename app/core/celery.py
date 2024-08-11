@@ -14,6 +14,7 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 #     "playground.tasks.task2": {"queue": "queue2"},
 # }
 
+
 app.conf.broker_transport_options = {
     "priority_steps": list(range(10)),
     "sep": ":",

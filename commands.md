@@ -1,6 +1,8 @@
 ### Python commands
 
 ```
+python manage.py shell
+python manage.py runserver
 pip freeze > requirements.txt
 ```
 
@@ -21,4 +23,17 @@ For windows: celery -A <app_name> worker --pool=solo -l info
 
 ### Lesson:
 
-4-> 4. Creating a new standalone Celery Worker
+Done: 4-> 12. Configuring Task Prioritization (RabbitMQ)
+
+### Celery Code
+
+```
+# for grouping and chaining tasks using celery
+from celery import group, chain
+from playground.tasks import tp1, tp2, tp3, tp4, tp5, task1
+task_group = group(tp1.s(), tp2.s(), tp3.s(), tp4.s())
+task_group.apply_async()
+
+task_chain = chain(tp1.s(), tp2.s(), tp3.s())
+task_chain.apply_async()
+```

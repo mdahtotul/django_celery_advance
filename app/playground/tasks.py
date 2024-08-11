@@ -14,7 +14,7 @@ def tp2(queue="celery:1"):
     return
 
 
-@shared_task
+@shared_task(task_rate_limit="10/m")
 def tp3(queue="celery:2"):
     time.sleep(3)
     return
