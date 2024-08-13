@@ -23,7 +23,7 @@ For windows: celery -A <app_name> worker --pool=solo -l info
 
 ### Lesson:
 
-Done: 4-> 12. Configuring Task Prioritization (RabbitMQ)
+Done: 4-> 13. Passing arguments and returning results from Celery tasks
 
 ### Celery Code
 
