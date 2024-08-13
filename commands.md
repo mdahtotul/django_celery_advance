@@ -34,7 +34,8 @@ from playground.tasks import tp1, tp2, tp3, tp4, tp5, task1
 task_group = group(tp1.s(), tp2.s(), tp3.s(), tp4.s())
 task_group.apply_async()
 
-task_chain = chain(tp1.s(), tp2.s(), tp3.s())
+
+task_chain = chain(tp1.s(), tp2.s(), tp3.s()) # synchronously execution
 task_chain.apply_async()
 
 from core.celery import t1
