@@ -1,5 +1,12 @@
 services:
   # message broker service
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 1672:15672
+  # message broker service
   redis:
     image: redis:7.4.0-alpine3.20
 
@@ -25,7 +32,7 @@ services:
     container_name: celery
     build:
       context: ./app
-    command: celery -A core worker -l INFO -Q celery,celery:1,celery:2,celery:3
+    command: celery -A core worker -l INFO -Q tasks
     volumes:
       - ./app:/usr/src/app
     environment:

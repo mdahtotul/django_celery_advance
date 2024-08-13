@@ -36,4 +36,8 @@ task_group.apply_async()
 
 task_chain = chain(tp1.s(), tp2.s(), tp3.s())
 task_chain.apply_async()
+
+from core.celery import t1
+result = t1.apply_async(args=[5,10], kwargs={"message": "The sum is"})
+print(result.get())
 ```
